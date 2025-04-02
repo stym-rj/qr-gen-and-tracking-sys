@@ -2,7 +2,8 @@ import dbConnect from '../../lib/dbConnect';
 import QrLink from '../../models/QrLink';
 import ScanData from '../../models/ScanData';
 // import geoip from 'geoip-lite'; // Remove this import
-import UAParser from 'ua-parser-js';
+// import UAParser from 'ua-parser-js';
+const UAParser = require('ua-parser-js');
 
 export async function getServerSideProps(context) {
     const { id } = context.params;
