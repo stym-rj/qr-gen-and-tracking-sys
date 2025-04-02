@@ -72,20 +72,37 @@ export async function getServerSideProps(context) {
             console.log(`[${id}] Skipping GeoIP lookup for IP: ${ip}`);
         }
 
-        // --- User Agent Parsing (using ua-parser-js) ---
-        console.log(`[${id}] Parsing User Agent...`);
-        const parser = new UAParser(userAgentString);
-        const uaResult = parser.getResult();
-        const uaDetails = {
-            browserName: uaResult.browser?.name || null,
-            browserVersion: uaResult.browser?.version || null,
-            osName: uaResult.os?.name || null,
-            osVersion: uaResult.os?.version || null,
-            deviceType: uaResult.device?.type || null, // Often null for desktops
-            deviceVendor: uaResult.device?.vendor || null, // Often null/unreliable
-            deviceModel: uaResult.device?.model || null, // Often null/unreliable
+        // --- User Agent Parsing (Isolated Block) ---
+        console.log(`[${id}] Preparing to parse User Agent...`);
+        console.log(`[${id}] Raw User Agent String: ${userAgentString}`); // Log the raw UA
+
+        let uaDetails = { // Initialize with default null values
+            browserName: null, browserVersion: null, osName: null, osVersion: null,
+            deviceType: null, deviceVendor: null, deviceModel: null,
         };
-        console.log(`[${id}] Parsed UA details:`, uaDetails);
+
+        try {
+            // Attempt to instantiate and parse
+            const parser = new UAParser(userAgentString); // Error still likely here
+            const uaResult = parser.getResult();
+            // Assign results ONLY IF parsing succeeds
+            uaDetails = {
+                browserName: uaResult.browser?.name || null,
+                browserVersion: uaResult.browser?.version || null,
+                osName: uaResult.os?.name || null,
+                osVersion: uaResult.os?.version || null,
+                deviceType: uaResult.device?.type || null,
+                deviceVendor: uaResult.device?.vendor || null,
+                deviceModel: uaResult.device?.model || null,
+            };
+            console.log(`[${id}] Successfully parsed UA details:`, uaDetails);
+        } catch (uaError) {
+            // Log the specific UA parsing error ONLY
+            console.error(`[${id}] FAILED to parse User Agent:`, uaError);
+            // Keep uaDetails as the default null values set above
+        }
+        // --- End of UA Parsing Section ---
+
 
         // --- Prepare ScanData Document ---
         const scanDataObject = new ScanData({
