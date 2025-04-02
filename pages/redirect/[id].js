@@ -57,6 +57,8 @@ export async function getServerSideProps(context) {
         // --- End of Geolocation Section ---
 
         // --- User Agent Parsing (using ua-parser-js) ---
+        console.log("Type of imported UAParser:", typeof UAParser); // Add this
+        console.log("Imported UAParser module:", UAParser);       // Add this
         const parser = new UAParser(userAgentString);
         const uaResult = parser.getResult();
         const uaDetails = { /* ... same as before ... */ }; // No changes needed here
