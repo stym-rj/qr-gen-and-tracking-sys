@@ -10,13 +10,15 @@
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.779.0",
+    "geoip-lite": "^1.4.10",
     "iron-session": "^8.0.4",
     "mongoose": "^8.13.1",
     "nanoid": "^5.1.5",
     "next": "15.2.4",
     "qrcode": "^1.5.4",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "ua-parser-js": "^2.0.3"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
