@@ -54,7 +54,7 @@ export default async function handler(req, res) {
             Key: s3Key,
             Body: qrCodeBuffer,
             ContentType: 'image/png',
-            ACL: 'public-read', // Uncomment if your bucket policy doesn't grant public read
+            // ACL: 'public-read', // Uncomment if your bucket policy doesn't grant public read
         };
         console.log(`[<span class="math-inline">\{Date\.now\(\) \- startTime\}ms\] Uploading to S3 \(</span>{s3Bucket}/${s3Key})...`);
         await s3Client.send(new PutObjectCommand(uploadParams));

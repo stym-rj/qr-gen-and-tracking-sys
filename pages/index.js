@@ -7,6 +7,7 @@ export default function HomePage() {
     const [targetUrl, setTargetUrl] = useState('');
     const [qrCodeUrl, setQrCodeUrl] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [isDownloading, setIsDownloading] = useState(false); // downloading state
     const [error, setError] = useState('');
 
     const handleSubmit = async (event) => {
@@ -37,6 +38,53 @@ export default function HomePage() {
             setIsLoading(false);
         }
     };
+
+    // --- New Download Handler Function ---
+    const handleDownload = async () => {
+        if (!qrCodeUrl) return;
+
+        setIsDownloading(true);
+        setError(''); // Clear previous errors
+
+        try {
+            // Fetch the image data from the S3 URL
+            // Requires S3 CORS to be configured for your web app's origin
+            const response = await fetch(qrCodeUrl);
+
+            if (!response.ok) {
+                throw new Error(`Failed to fetch image: ${response.status} ${response.statusText}`);
+            }
+
+            // Get the image data as a Blob
+            const blob = await response.blob();
+
+            // Create a temporary URL for the Blob object
+            const objectUrl = URL.createObjectURL(blob);
+
+            // Create a temporary anchor element
+            const link = document.createElement('a');
+            link.href = objectUrl;
+            link.download = 'qrcode.png'; // Set the desired filename
+
+            // Append to body (required for Firefox)
+            document.body.appendChild(link);
+
+            // Programmatically click the link to trigger download
+            link.click();
+
+            // Clean up: remove the link and revoke the object URL
+            document.body.removeChild(link);
+            URL.revokeObjectURL(objectUrl);
+
+        } catch (err) {
+            console.error("Download failed:", err);
+            // Check console for CORS errors if fetch fails
+            setError(`Download failed. Check console for details (CORS?). Error: ${err.message}`);
+        } finally {
+            setIsDownloading(false);
+        }
+    };
+    // --- End of Download Handler ---
 
     return (
         <div className={styles.container}>
@@ -72,14 +120,20 @@ export default function HomePage() {
 
             {/* Display QR Code Section */}
             {qrCodeUrl && (
-                <div className={styles.qrContainer}> {/* Apply style */}
+                <div className={styles.qrContainer}>
                     <h2>Your QR Code:</h2>
-                    <img
-                        src={qrCodeUrl}
-                        alt="Generated QR Code"
-                        className={styles.qrImage} // Apply style
-                    />
+                    <img src={qrCodeUrl} alt="Generated QR Code" className={styles.qrImage} />
                     <p>Scan this code with your device!</p>
+
+                    {/* --- Replace <a> with <button> --- */}
+                    <button
+                        onClick={handleDownload}
+                        className={styles.downloadButton} // Reuse or adapt style
+                        disabled={isDownloading}
+                    >
+                        {isDownloading ? 'Downloading...' : 'Download QR Code'}
+                    </button>
+                    {/* --- End of Button --- */}
                 </div>
             )}
         </div>
