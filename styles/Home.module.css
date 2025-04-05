@@ -1,0 +1,116 @@
+/* styles/Home.module.css */
+
+.container {
+    min-height: 80vh;
+    /* Ensure container takes up most viewport height */
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* Center vertically */
+    align-items: center;
+    /* Center horizontally */
+    max-width: 600px;
+    /* Limit max width for better readability */
+    margin: auto;
+    /* Center the container itself */
+}
+
+.title {
+    margin-bottom: 2rem;
+    font-size: 2.5rem;
+    color: #333;
+    text-align: center;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    /* Stack input and button vertically */
+    align-items: center;
+    width: 100%;
+    margin-bottom: 2rem;
+}
+
+.input {
+    width: 100%;
+    /* Make input take full width of form */
+    padding: 12px 15px;
+    margin-bottom: 1rem;
+    /* Space between input and button */
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    /* Include padding and border in element's total width/height */
+}
+
+.input:focus {
+    border-color: #0070f3;
+    /* Highlight focus */
+    outline: none;
+}
+
+.button {
+    padding: 12px 25px;
+    font-size: 1.1rem;
+    color: white;
+    background-color: #0070f3;
+    /* Vercel blue - simple and clean */
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.button:hover:not(:disabled) {
+    background-color: #005bb5;
+    /* Darker blue on hover */
+}
+
+.button:disabled {
+    background-color: #ccc;
+    /* Grey out when disabled */
+    cursor: not-allowed;
+}
+
+.error {
+    color: #ff4d4f;
+    /* A standard error red */
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.qrContainer {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border-top: 1px solid #eee;
+    /* Separator line */
+    padding-top: 2rem;
+    width: 100%;
+}
+
+.qrContainer h2 {
+    margin-bottom: 1rem;
+    color: #555;
+}
+
+.qrImage {
+    max-width: 250px;
+    /* Control QR code size */
+    height: auto;
+    margin-bottom: 1rem;
+    /* Space below QR */
+    border: 1px solid #eee;
+    /* Subtle border */
+    padding: 5px;
+    /* Small padding around QR */
+}
+
+.qrContainer p {
+    color: #777;
+    font-size: 0.9rem;
+}
