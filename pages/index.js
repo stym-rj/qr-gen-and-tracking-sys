@@ -25,10 +25,13 @@ export default function HomePage() {
                 throw new Error(data.message || 'Failed to generate QR code');
             }
 
+            console.log("Received QR Code URL from API : ", data.qrCodeUrl);
+
             setQrCodeUrl(data.qrCodeUrl);
 
 
         } catch (err) {
+            console.log("error while fetching qr code url in FRONTEND!");
             setError(err.message);
         } finally {
             setIsLoading(false);

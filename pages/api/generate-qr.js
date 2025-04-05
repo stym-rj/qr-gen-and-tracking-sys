@@ -54,13 +54,14 @@ export default async function handler(req, res) {
             Key: s3Key,
             Body: qrCodeBuffer,
             ContentType: 'image/png',
-            // ACL: 'public-read', // Uncomment if your bucket policy doesn't grant public read
+            ACL: 'public-read', // Uncomment if your bucket policy doesn't grant public read
         };
         console.log(`[<span class="math-inline">\{Date\.now\(\) \- startTime\}ms\] Uploading to S3 \(</span>{s3Bucket}/${s3Key})...`);
         await s3Client.send(new PutObjectCommand(uploadParams));
         console.log(`[${Date.now() - startTime}ms] S3 Upload complete.`);
 
-        const qrCodeS3Url = `https://<span class="math-inline">\{s3Bucket\}\.s3\.</span>{process.env.AWS_REGION}.amazonaws.com/${s3Key}`;
+        // const qrCodeS3Url = `https://<span class="math-inline">\{s3Bucket\}\.s3\.</span>{process.env.AWS_REGION}.amazonaws.com/${s3Key}`;
+        const qrCodeS3Url = `https://${s3Bucket}.s3.${process.env.AWS_REGION}.amazonaws.com/${s3Key}`;
         // Note: Construct the S3 URL based on your region and bucket setup.
         // This format works for newer regions. Older ones might not need the region.
         // Or better: configure CloudFront in front of S3 for a custom domain and CDN benefits.
